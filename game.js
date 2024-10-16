@@ -1,8 +1,7 @@
-// Canvas setup
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Clase Ball (Pelota)
 class Ball {
     constructor(x, y, radius, speedX, speedY) {
         this.x = x;
@@ -24,7 +23,7 @@ class Ball {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        // Colisión con la parte superior e inferior
+        // Colisiones superior e inferior
         if (this.y - this.radius <= 0 || this.y + this.radius >= canvas.height) {
             this.speedY = -this.speedY;
         }
@@ -33,11 +32,11 @@ class Ball {
     reset() {
         this.x = canvas.width / 2;
         this.y = canvas.height / 2;
-        this.speedX = -this.speedX; // Cambia dirección al resetear
+        // Cambia dirección al resetear
+        this.speedX = -this.speedX;
     }
 }
 
-// Clase Paddle (Paleta)
 class Paddle {
     constructor(x, y, width, height, isPlayerControlled = false) {
         this.x = x;
@@ -61,7 +60,7 @@ class Paddle {
         }
     }
 
-    // Movimiento de la paleta automática (IA)
+    // Movimiento barra IA
     autoMove(ball) {
         if (ball.y < this.y + this.height / 2) {
             this.y -= this.speed;
@@ -71,13 +70,14 @@ class Paddle {
     }
 }
 
-// Clase Game (Controla el juego)
 class Game {
     constructor() {
         this.ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 4, 4);
-        this.paddle1 = new Paddle(0, canvas.height / 2 - 50, 10, 100, true); // Controlado por el jugador
-        this.paddle2 = new Paddle(canvas.width - 10, canvas.height / 2 - 50, 10, 100); // Controlado por la computadora
-        this.keys = {}; // Para capturar las teclas
+        // jugador:
+        this.paddle1 = new Paddle(0, canvas.height / 2 - 50, 10, 100, true);
+        // IA:
+        this.paddle2 = new Paddle(canvas.width - 10, canvas.height / 2 - 50, 10, 100);
+        this.keys = {};
 
         this.ball2 = new Ball(canvas.width / 2, canvas.height / 2, 5, 3, 3);
         this.ball3 = new Ball(canvas.width / 2, canvas.height / 2, 2, 2, 2);
@@ -105,7 +105,7 @@ class Game {
         this.ball4.move();
         this.ball5.move();
 
-        // Movimiento de la paleta 1 (Jugador) controlado por teclas
+        // Movimiento jugador
         if (this.keys['ArrowUp']) {
             this.paddle1.move('up', 50);
         }
@@ -113,10 +113,10 @@ class Game {
             this.paddle1.move('down', 50);
         }
 
-        // Movimiento de la paleta 2 (Controlada por IA)
+        // Movimiento IA
         this.paddle2.autoMove(this.ball);
 
-        // Colisiones con las paletas
+        // Colisiones de barras
         if (this.ball.x - this.ball.radius <= this.paddle1.x + this.paddle1.width &&
             this.ball.y >= this.paddle1.y && this.ball.y <= this.paddle1.y + this.paddle1.height  + 50 + 50) {
             this.ball.speedX = -this.ball.speedX;
@@ -127,12 +127,11 @@ class Game {
             this.ball.speedX = -this.ball.speedX;
         }
 
-        // Detectar cuando la pelota sale de los bordes (punto marcado)
         if (this.ball.x - this.ball.radius <= 0 || this.ball.x + this.ball.radius >= canvas.width) {
             this.ball.reset();
         }
-        // -------------------------------------------
-        // Colisiones con las paletas
+
+
         if (this.ball2.x - this.ball2.radius <= this.paddle1.x + this.paddle1.width &&
             this.ball2.y >= this.paddle1.y && this.ball2.y <= this.paddle1.y + this.paddle1.height + 50 + 50) {
             this.ball2.speedX = -this.ball2.speedX;
@@ -143,12 +142,11 @@ class Game {
             this.ball2.speedX = -this.ball2.speedX;
         }
 
-        // Detectar cuando la pelota sale de los bordes (punto marcado)
+
         if (this.ball2.x - this.ball2.radius <= 0 || this.ball2.x + this.ball2.radius >= canvas.width) {
             this.ball2.reset();
         }   
-        // -------------------------------------------
-        // Colisiones con las paletas
+
         if (this.ball3.x - this.ball3.radius <= this.paddle1.x + this.paddle1.width &&
             this.ball3.y >= this.paddle1.y && this.ball3.y <= this.paddle1.y + this.paddle1.height + 50 + 50) {
             this.ball3.speedX = -this.ball3.speedX;
@@ -159,12 +157,10 @@ class Game {
             this.ball3.speedX = -this.ball3.speedX;
         }
 
-        // Detectar cuando la pelota sale de los bordes (punto marcado)
         if (this.ball3.x - this.ball3.radius <= 0 || this.ball3.x + this.ball3.radius >= canvas.width) {
             this.ball3.reset();
         }                        
-        // -------------------------------------------
-        // Colisiones con las paletas
+
         if (this.ball4.x - this.ball4.radius <= this.paddle1.x + this.paddle1.width &&
             this.ball4.y >= this.paddle1.y && this.ball4.y <= this.paddle1.y + this.paddle1.height + 50 + 50) {
             this.ball4.speedX = -this.ball4.speedX;
@@ -175,12 +171,10 @@ class Game {
             this.ball4.speedX = -this.ball4.speedX;
         }
 
-        // Detectar cuando la pelota sale de los bordes (punto marcado)
         if (this.ball4.x - this.ball4.radius <= 0 || this.ball4.x + this.ball4.radius >= canvas.width) {
             this.ball4.reset();
         }   
-        // -------------------------------------------
-        // Colisiones con las paletas
+
         if (this.ball5.x - this.ball5.radius <= this.paddle1.x + this.paddle1.width &&
             this.ball5.y >= this.paddle1.y && this.ball5.y <= this.paddle1.y + this.paddle1.height + 50 + 50) {
             this.ball5.speedX = -this.ball5.speedX;
@@ -191,14 +185,13 @@ class Game {
             this.ball5.speedX = -this.ball5.speedX;
         }
 
-        // Detectar cuando la pelota sale de los bordes (punto marcado)
         if (this.ball5.x - this.ball5.radius <= 0 || this.ball5.x + this.ball5.radius >= canvas.width) {
             this.ball5.reset();
         }           
 
     }
 
-    // Captura de teclas para el control de la paleta
+// controles
     handleInput() {
         window.addEventListener('keydown', (event) => {
             this.keys[event.key] = true;
@@ -220,6 +213,6 @@ class Game {
     }
 }
 
-// Crear instancia del juego y ejecutarlo
+// Instanciar el juego y correrlo
 const game = new Game();
 game.run();
